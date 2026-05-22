@@ -6,6 +6,8 @@ date: today
 brand: _brand.yml
 format:
   revealjs:
+    format:
+    embed-resources: true
     slide-number: true
     progress: true
     toc: false
