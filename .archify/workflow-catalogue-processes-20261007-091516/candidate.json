@@ -1,0 +1,357 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "PB3 Data Catalogue: Adding a Dataset Entry",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": ".archify/workflow-catalogue-processes-20261007-091516/catalogue-processes.html",
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Contributor step"
+        },
+        "backend": {
+          "label": "Automation / merge"
+        },
+        "security": {
+          "label": "Quality gate"
+        },
+        "messagebus": {
+          "label": "Microsoft 365 automation"
+        },
+        "database": {
+          "label": "Stored in repo"
+        },
+        "external": {
+          "label": "Person"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "researcher",
+      "label": "Researcher (GitHub)"
+    },
+    {
+      "id": "m365",
+      "label": "Microsoft 365 (no GitHub)"
+    },
+    {
+      "id": "automation",
+      "label": "GitHub Actions"
+    },
+    {
+      "id": "maintainers",
+      "label": "Catalogue maintainers"
+    },
+    {
+      "id": "catalogue",
+      "label": "Catalogue on main"
+    }
+  ],
+  "phases": [
+    {
+      "id": "submit",
+      "label": "Submit",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "propose",
+      "label": "Propose + check",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "security"
+    },
+    {
+      "id": "review",
+      "label": "Review",
+      "fromCol": 4,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "publish",
+      "label": "Publish",
+      "fromCol": 5,
+      "toCol": 5
+    }
+  ],
+  "groups": [
+    {
+      "id": "form_route",
+      "label": "Form route",
+      "lane": "m365",
+      "fromCol": 0,
+      "toCol": 1,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "researcher",
+    "entry",
+    "pr",
+    "validate",
+    "review",
+    "merge",
+    "catalogue"
+  ],
+  "nodes": [
+    {
+      "id": "researcher",
+      "lane": "researcher",
+      "col": 0,
+      "type": "external",
+      "icon": "person",
+      "label": "Researcher",
+      "sublabel": "has a new dataset",
+      "width": 128
+    },
+    {
+      "id": "entry",
+      "lane": "researcher",
+      "col": 1,
+      "type": "frontend",
+      "label": "Fill in template",
+      "sublabel": "YAML front matter",
+      "tag": "draft or complete",
+      "width": 128
+    },
+    {
+      "id": "pr",
+      "lane": "researcher",
+      "col": 2,
+      "type": "frontend",
+      "label": "Pull request",
+      "sublabel": "PR template checklist",
+      "width": 128
+    },
+    {
+      "id": "fix",
+      "lane": "researcher",
+      "col": 3,
+      "type": "frontend",
+      "label": "Fix entry",
+      "sublabel": "edit + commit again",
+      "width": 128
+    },
+    {
+      "id": "form",
+      "lane": "m365",
+      "col": 0,
+      "type": "frontend",
+      "label": "Microsoft Form",
+      "sublabel": "ZALF users only",
+      "width": 128
+    },
+    {
+      "id": "flow",
+      "lane": "m365",
+      "col": 1,
+      "type": "messagebus",
+      "label": "Power Automate",
+      "sublabel": "repository dispatch",
+      "width": 128
+    },
+    {
+      "id": "intake",
+      "lane": "automation",
+      "col": 1,
+      "type": "backend",
+      "label": "Form intake",
+      "sublabel": "form_to_entry.py",
+      "tag": "always draft",
+      "width": 128
+    },
+    {
+      "id": "validate",
+      "lane": "automation",
+      "col": 2,
+      "type": "security",
+      "label": "Validate check",
+      "sublabel": "metadata-schema.json",
+      "width": 128,
+      "tag": "every PR"
+    },
+    {
+      "id": "review",
+      "lane": "maintainers",
+      "col": 4,
+      "type": "security",
+      "icon": "person",
+      "label": "Maintainer review",
+      "sublabel": "approval by CODEOWNERS",
+      "width": 128
+    },
+    {
+      "id": "merge",
+      "lane": "maintainers",
+      "col": 5,
+      "type": "backend",
+      "label": "Squash merge",
+      "sublabel": "into main",
+      "width": 128
+    },
+    {
+      "id": "index",
+      "lane": "catalogue",
+      "col": 4,
+      "type": "database",
+      "label": "Index + summary",
+      "sublabel": "index.md (planned)",
+      "width": 128
+    },
+    {
+      "id": "catalogue",
+      "lane": "catalogue",
+      "col": 5,
+      "type": "database",
+      "label": "Catalogue entries",
+      "sublabel": "catalogue/*.md",
+      "width": 128
+    }
+  ],
+  "edges": [
+    {
+      "id": "start-github",
+      "from": "researcher",
+      "to": "entry",
+      "label": "uses GitHub",
+      "variant": "emphasis"
+    },
+    {
+      "id": "start-form",
+      "from": "researcher",
+      "to": "form",
+      "label": "no GitHub",
+      "variant": "dashed",
+      "role": "branch",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "entry-pr",
+      "from": "entry",
+      "to": "pr",
+      "label": "commit",
+      "variant": "emphasis"
+    },
+    {
+      "id": "pr-validate",
+      "from": "pr",
+      "to": "validate",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "form-flow",
+      "from": "form",
+      "to": "flow",
+      "label": "submit",
+      "variant": "dashed"
+    },
+    {
+      "id": "flow-intake",
+      "from": "flow",
+      "to": "intake",
+      "label": "answers",
+      "variant": "dashed"
+    },
+    {
+      "id": "intake-validate",
+      "from": "intake",
+      "to": "validate",
+      "label": "opens draft PR",
+      "variant": "dashed"
+    },
+    {
+      "id": "validate-fail",
+      "from": "validate",
+      "to": "fix",
+      "label": "fails",
+      "variant": "security",
+      "role": "error",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "fix-retry",
+      "from": "fix",
+      "to": "pr",
+      "label": "re-run",
+      "variant": "dashed",
+      "role": "return"
+    },
+    {
+      "id": "validate-pass",
+      "from": "validate",
+      "to": "review",
+      "label": "passes",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "left"
+    },
+    {
+      "id": "review-changes",
+      "from": "review",
+      "to": "fix",
+      "label": "changes requested",
+      "variant": "security",
+      "role": "error",
+      "fromSide": "top",
+      "toSide": "right"
+    },
+    {
+      "id": "review-approve",
+      "from": "review",
+      "to": "merge",
+      "label": "approved",
+      "variant": "emphasis"
+    },
+    {
+      "id": "merge-main",
+      "from": "merge",
+      "to": "catalogue",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rebuild-index",
+      "from": "catalogue",
+      "to": "index",
+      "label": "rebuild",
+      "variant": "dashed",
+      "role": "async"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Two ways in",
+      "items": [
+        "GitHub users copy the template and open a pull request",
+        "Others fill in the Microsoft Form; a workflow writes the entry and opens a draft PR",
+        "Both routes meet at the same validation and review"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Gates",
+      "items": [
+        "Draft entries: missing fields are warnings; complete entries: errors",
+        "A failed check or requested changes go back to the contributor",
+        "main only changes through an approved, passing PR"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Form entries",
+      "items": [
+        "Always arrive as status: draft",
+        "Maintainer completes details with the researcher by email, then sets complete"
+      ]
+    }
+  ]
+}

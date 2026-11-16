@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "05769d1f-214a-4924-a433-80173c254424",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "C:\\Users\\black\\OneDrive - Leibniz-Zentrum für Agrarlandschaftsforschung (ZALF) e.V\\Documents\\git\\pb3-data-catalogue\\.archify\\workflow-catalogue-processes-20261007-091516\\candidate.json",
+  "output": "C:\\Users\\black\\OneDrive - Leibniz-Zentrum für Agrarlandschaftsforschung (ZALF) e.V\\Documents\\git\\pb3-data-catalogue\\.archify\\workflow-catalogue-processes-20261007-091516\\catalogue-processes.html",
+  "specification": {
+    "sha256": "4db1740644ef5f3a970f63e1dba4765db0c6d9f8279ac45013fbd532d7ce2a97",
+    "bytes": 7544
+  },
+  "artifact": {
+    "sha256": "68dfad651b489c29b524399449e871591a82ecd72209f1c40fa1f788a2884047",
+    "bytes": 770042
+  }
+}
